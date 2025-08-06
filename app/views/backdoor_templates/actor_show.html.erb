@@ -1,0 +1,124 @@
+<nav>
+  <ul>
+    <li><a href="/backdoor/directors">Manage Directors</a></li>
+    <li><a href="/backdoor/actors">Manage Actors</a></li>
+    <li><a href="/backdoor/movies">Manage Movies</a></li>
+  </ul>
+</nav>
+
+<nav aria-label="breadcrumb">
+  <ul>
+    <li><a href="/backdoor">Admin</a></li>
+    <li><a href="/backdoor/actors">Manage actors</a></li>
+    <li>Edit Actor #<%= @the_actor.id %></li>
+  </ul>
+</nav>
+
+<h1>Edit Actor #<%= @the_actor.id %></h1>
+
+<p>
+  <a href="/actors/<%= @the_actor.id %>" target="_blank">View Actor Details</a>
+</p>
+
+<hr>
+
+<form action="/backdoor/modify_actor/<%= @the_actor.id %>" method="post">
+  <div>
+    <label for="first_name">Actor First Name</label>
+    <input type="text" id="first_name" name="query_first_name" value="<%= @the_actor.first_name %>" required>
+  </div>
+
+  <div>
+    <label for="last_name">Actor Last Name</label>
+    <input type="text" id="last_name" name="query_last_name" value="<%= @the_actor.last_name %>" required>
+  </div>
+
+  <div>
+    <label for="dob">Date of Birth</label>
+    <input type="date" id="dob" name="query_dob" value="<%= @the_actor.dob %>">
+  </div>
+
+  <div>
+    <label for="bio">Bio</label>
+    <textarea id="bio" name="query_bio" rows="5"><%= @the_actor.bio %></textarea>
+  </div>
+
+  <div>
+    <label for="image">Image URL</label>
+    <input type="text" id="image" name="query_image" value="<%= @the_actor.image %>">
+  </div>
+
+  <button type="submit">Update Actor</button>
+</form>
+
+<hr>
+
+<h3>Add Credit</h3>
+<form action="/backdoor/actors/<%= @the_actor.id %>/insert_credit" method="post">
+  <div>
+    <label for="credit_role">Role</label>
+    <input type="text" id="credit_role" name="query_role" required
+           placeholder="e.g., Batman, The Joker, Hermione Granger">
+  </div>
+
+  <div>
+    <label for="credit_movie">Movie</label>
+    <select id="credit_movie" name="query_movie_id" required>
+      <option value="">Choose a movie...</option>
+      <% Movie.all.order({ :year => :desc, :title => :asc }).each do |movie| %>
+        <option value="<%= movie.id %>">
+          <%= movie.title %> (<%= movie.year %>)
+        </option>
+      <% end %>
+    </select>
+    <p>
+      <a href="/backdoor" target="_blank">→ Add a new movie if not in the list</a>
+    </p>
+  </div>
+
+  <button type="submit">Add Credit</button>
+</form>
+
+<hr>
+
+<h3>Current Filmography</h3>
+<% credits = Credit.where({ :actor_id => @the_actor.id }) %>
+<% if credits.any? %>
+  <div class="overflow-auto">
+    <table style="width: 100%; margin-top: 1rem;">
+      <thead>
+        <tr>
+          <th>Movie</th>
+          <th>Year</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% credits.each do |credit| %>
+          <% m_id = credit.movie_id %>
+
+          <% matching_movies = Movie.where({ :id => m_id }) %>
+
+          <% movie = matching_movies.at(0) %>
+          <tr>
+            <td>
+              <% if movie.present? %>
+                <%= movie.title %>
+              <% else %>
+                Unknown Movie
+              <% end %>
+            </td>
+            <td>
+              <% if movie %>
+                <%= movie.year %>
+              <% end %>
+            </td>
+            <td><%= credit.role %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>No credits added yet.</p>
+<% end %>

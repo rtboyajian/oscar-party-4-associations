@@ -1,0 +1,48 @@
+<nav>
+  <ul>
+    <li><a href="/backdoor/directors">Manage Directors</a></li>
+    <li><a href="/backdoor/actors">Manage Actors</a></li>
+    <li><a href="/backdoor/movies">Manage Movies</a></li>
+  </ul>
+</nav>
+
+<nav aria-label="breadcrumb">
+  <ul>
+    <li><a href="/backdoor">Admin</a></li>
+    <li>Manage actors</li>
+  </ul>
+</nav>
+
+<article>
+  <header>
+    <h1>Actors</h1>
+  </header>
+
+  <div class="overflow-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @list_of_actors.each do |actor| %>
+          <tr>
+            <td>
+              <%= actor.first_name %>
+            </td>
+            <td>
+              <%= actor.last_name %>
+            </td>
+            <td>
+              <a href="/backdoor/actors/<%= actor.id %>">Edit</a> |
+              <a href="/backdoor/delete_actor/<%= actor.id %>">Delete</a>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</article>
