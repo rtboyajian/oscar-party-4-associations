@@ -48,11 +48,7 @@
     <h2>Filmography</h2>
   </header>
   <ul>
-    <% d_id = @the_director.id %>
-
-    <% matching_movies = Movie.where({ :director_id => d_id }) %>
-
-    <% matching_movies.each do |a_movie| %>
+    <% the_director.filmography.each do |a_movie| %>
       <li>
         <a href="/movies/<%= a_movie.id %>"><%= a_movie.title %> (<%= a_movie.year %>)</a>
       </li>
