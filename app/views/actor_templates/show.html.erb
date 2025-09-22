@@ -48,16 +48,7 @@
     <h2>Filmography</h2>
   </header>
   <ul>
-    <% a_id = @the_actor.id %>
-
-    <% matching_credits = Credit.where({ :actor_id => a_id }) %>
-
-    <% matching_credits.each do |a_credit| %>
-      <% m_id = a_credit.movie_id %>
-
-      <% matching_movies = Movie.where({ :id => m_id }) %>
-
-      <% the_movie = matching_movies.at(0) %>
+      <% @the_actor.filmography.each do |the_movie| %>
 
       <li>
         <a href="/movies/<%= the_movie.id %>"><%= the_movie.title %> (<%= the_movie.year %>)</a>

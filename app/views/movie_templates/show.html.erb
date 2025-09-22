@@ -71,11 +71,7 @@
     </dt>
     <dd>
 
-      <% d_id = @the_movie.director_id %>
-        
-      <% matching_directors = Director.where({ :id => d_id }) %>
-      
-      <% the_director = matching_directors.at(0) %>
+      <% the_director = @the_movie.director %>
 
       <% if the_director != nil %>
         <a href="/directors/<%= the_director.id %>">
@@ -100,16 +96,8 @@
     <h2>Cast</h2>
   </header>
   <ul>
-    <% m_id = @the_movie.id %>
-
-    <% matching_credits = Credit.where({ :movie_id => m_id }) %>
-
-    <% matching_credits.each do |a_credit| %>
-      <% a_id = a_credit.actor_id %>
-      
-      <% matching_actors = Actor.where({ :id => a_id }) %>
-      
-      <% the_actor = matching_actors.at(0) %>
+      <% @the_movie.credits.each do |a_credit| %>
+        <% the_actor = a_credit.actor %>
 
       <% if the_actor.present? %>
         <li>

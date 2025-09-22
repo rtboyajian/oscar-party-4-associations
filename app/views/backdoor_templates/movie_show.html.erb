@@ -112,8 +112,8 @@
 </form>
 
 <h3>Current Cast</h3>
-<% credits = Credit.where({ :movie_id => @the_movie.id }) %>
-<% if credits.any? %>
+<% movie_credits = @the_movie.credits %>
+<% if movie_credits.any? %>
   <div class="overflow-auto">
     <table style="width: 100%; margin-top: 1rem;">
       <thead>
@@ -123,15 +123,11 @@
         </tr>
       </thead>
       <tbody>
-        <% credits.each do |credit| %>
-          <% a_id = credit.actor_id %>
+        <% movie_credits.each do |credit| %>
       
-          <% matching_actors = Actor.where({ :id => a_id }) %>
-          
-          <% actor = matching_actors.at(0) %>
           <tr>
             <td>
-              <%= actor.first_name %> <%= actor.last_name %>
+              <%= credit.actor.first_name %> <%= credit.actor.last_name %>
             </td>
             <td>
               <%= credit.role %>
